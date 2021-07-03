@@ -14,6 +14,7 @@ createConnection().then(async connection => {
     const cert = fs.readFileSync('./cert.pem', 'utf8');
     // create express app
     const app = express();
+
     app.use(cors({
         credentials: true,//protiv xss napada
 
@@ -94,8 +95,7 @@ createConnection().then(async connection => {
             next();
         }
     })
-    app.use('/file', express.static('file', { extensions: ['pdf'] }))
-    app.use('/img', express.static('img', { extensions: ['jpg', 'png', 'jpeg'] }))
+    app.use('/uploads', express.static('uploads'))
     Routes.forEach(route => {
         app[route.method](route.route, ...route.action);
     });
@@ -108,21 +108,10 @@ createConnection().then(async connection => {
     const server = https.createServer({
         key: key,
         cert: cert,
+
     }, app)
     server.listen(process.env.PORT || 4000, () => console.log('app is listening'))
 
 
 
-
 }).catch(error => console.log(error));
-async function getUser(table: any, email: string, password: string) {
-
-    const repository = getRepository(table);
-    return await repository.find({
-        where: {
-            email: email,
-            sifra: password,
-
-        }
-    })
-}
