@@ -113,7 +113,9 @@ function App() {
   return (
     <>
       <Navbar full={user !== undefined} logout={() => { setUser(undefined) }} admin={user?.isAdmin} />
+      <div className='naslovna'>
 
+      </div>
       <Switch>
         <Route path='/login'>
           {user ? (
@@ -147,7 +149,7 @@ function App() {
           <BooksPage authors={authors} topics={topics} books={books} />
         </PrivateRoute>
         <PrivateRoute active={user !== undefined} path='/' redirect='/login'>
-          <Home books={books} topics={topics} />
+          <Home books={books.slice(0, 4)} />
         </PrivateRoute>
 
 
